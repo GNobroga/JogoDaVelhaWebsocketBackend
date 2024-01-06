@@ -1,3 +1,3 @@
 # JogoDaVelhaWebsocketBackend
 
-Backend para se comunicar com a aplicação desenvolvida no JogoDaVelhaWebsocketFrontend
+Backend para servir como ponta pé para o projeto contido no repositório -> https://github.com/GNobroga/JogoDaVelhaWebsocketFront
