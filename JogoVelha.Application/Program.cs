@@ -15,8 +15,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMvc(options => {
     options.RespectBrowserAcceptHeader = true;
-    options.FormatterMappings.SetMediaTypeMappingForFormat("xml", "application/xml");
     options.FormatterMappings.SetMediaTypeMappingForFormat("json", "application/json");
+    options.FormatterMappings.SetMediaTypeMappingForFormat("xml", "application/xml");
 }).AddXmlSerializerFormatters();
 
 // Configration for versioning
