@@ -32,10 +32,12 @@ apiVersioningBuilder.AddApiExplorer(options => {
 
 builder.Services.AddAutoMapper(options => options.AddProfile<AutoMapperProfile>());
 
+
+builder.Services.AddSqliteConfiguration(builder.Configuration);
+
 builder.Services.AddDbContext<SqliteDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
 
-builder.Services.AddSqliteConfiguration(builder.Configuration);
 builder.Services.AddServiceLayerServices(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddScoped<GlobalExceptionHandlerMiddleware>();
