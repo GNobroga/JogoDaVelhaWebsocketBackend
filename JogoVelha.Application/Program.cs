@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using JogoVelha.Application.Middlewares;
 using JogoVelha.Domain.AutoMapper;
 using JogoVelha.Infrastructure;
 using JogoVelha.Service;
@@ -46,11 +47,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.Run();
 
