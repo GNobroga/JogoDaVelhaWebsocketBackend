@@ -2,7 +2,7 @@ using JogoVelha.Domain.Entities.Base;
 using JogoVelha.Infrastructure.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace JogoVelha.Infrastructure.Repositories.Implentation;
+namespace JogoVelha.Infrastructure.Repositories.Implementation;
 
 public class RepositoryBase<TEntity, TContext>(TContext context) : IRepository<TEntity> where TEntity: EntityBase where TContext: DbContext
 {   

@@ -6,9 +6,9 @@ namespace JogoVelha.Infrastructure;
 
 public static class DbConnectionExtensions 
 {
-    public static IServiceCollection AddSqliteConfiguration(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddSqliteConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        var connection = new SqliteConnection(config.GetConnectionString("SqliteConnection"));
+        var connection = new SqliteConnection(configuration.GetConnectionString("SqliteConnection"));
         EvolveConfiguration.Configure(connection);
         return services;
     }
