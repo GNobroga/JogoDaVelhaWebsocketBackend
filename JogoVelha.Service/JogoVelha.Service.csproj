@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JogoVelha.Domain\JogoVelha.Domain.csproj" />
+    <ProjectReference Include="..\JogoVelha.Infrastructure\JogoVelha.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

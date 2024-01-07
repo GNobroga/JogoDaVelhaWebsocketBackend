@@ -1,8 +1,21 @@
 namespace JogoVelha.Domain.DTOs;
 
-public record UserDTO(
-    int Id,
-    string Username,
-    string Email,
-    string Password
-);
+public sealed class UserDTO 
+{   
+    public record UserRequest(
+        int Id,
+        string Username,
+        string Email,
+        string Password
+    );
+
+    public record UserResponse(
+        int Id,
+        string Username,
+        string Email,
+        string Password
+    );
+
+}
+
+

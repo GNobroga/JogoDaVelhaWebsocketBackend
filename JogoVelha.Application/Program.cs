@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using JogoVelha.Domain.AutoMapper;
 using JogoVelha.Infrastructure;
 using JogoVelha.Service;
 using Microsoft.EntityFrameworkCore;
@@ -21,10 +22,14 @@ var apiVersioningBuilder = builder.Services.AddApiVersioning(options => {
     );
 });
 
+
+// Configurations 
 apiVersioningBuilder.AddApiExplorer(options => {
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
 });
+
+builder.Services.AddAutoMapper(options => options.AddProfile<AutoMapperProfile>());
 
 builder.Services.AddDbContext<SqliteDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
