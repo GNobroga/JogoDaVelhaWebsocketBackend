@@ -38,6 +38,7 @@ builder.Services.AddDbContext<SqliteDbContext>(options =>
 builder.Services.AddSqliteConfiguration(builder.Configuration);
 builder.Services.AddServiceLayerServices(builder.Configuration);
 builder.Services.AddRepositories();
+builder.Services.AddScoped<GlobalExceptionHandlerMiddleware>();
 
 var app = builder.Build();
 
