@@ -2,7 +2,6 @@ using System.Net;
 using Asp.Versioning;
 using JogoVelha.Domain.DTOs;
 using JogoVelha.Service.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JogoVelha.Application.Controllers;

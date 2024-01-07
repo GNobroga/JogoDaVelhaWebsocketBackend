@@ -34,12 +34,13 @@ public sealed class UserDTO
         }
     }
 
-    public record UserResponse(
-        int Id,
-        string Username,
-        string Email,
-        string Password
-    );
+    public class UserResponse
+    {
+        public int Id { get; set; }
+        public string Username { get; set; } = default!;
+        public string Email { get; set; } = default!;
+    }
+
 }
 
 

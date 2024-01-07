@@ -1,15 +1,23 @@
+using System.Net.Http.Headers;
 using Asp.Versioning;
 using JogoVelha.Application.Middlewares;
 using JogoVelha.Domain.AutoMapper;
 using JogoVelha.Infrastructure;
 using JogoVelha.Service;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMvc(options => {
+    options.RespectBrowserAcceptHeader = true;
+    options.FormatterMappings.SetMediaTypeMappingForFormat("xml", "application/xml");
+    options.FormatterMappings.SetMediaTypeMappingForFormat("json", "application/json");
+}).AddXmlSerializerFormatters();
 
 // Configration for versioning
 var apiVersioningBuilder = builder.Services.AddApiVersioning(options => {
