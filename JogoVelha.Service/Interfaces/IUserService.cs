@@ -1,5 +1,4 @@
 using JogoVelha.Domain.DTOs;
-using JogoVelha.Domain.Entities;
 
 namespace JogoVelha.Service.Interfaces;
 
