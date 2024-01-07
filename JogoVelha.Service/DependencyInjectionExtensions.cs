@@ -13,6 +13,7 @@ public static class DependencyInjectionExtensions
     {
         ConfigureTokenService(services, configuration);
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IUserService, UserService>();
         return services;
     }
 

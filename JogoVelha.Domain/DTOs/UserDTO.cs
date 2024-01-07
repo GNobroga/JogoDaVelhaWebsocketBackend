@@ -40,7 +40,6 @@ public sealed class UserDTO
         string Email,
         string Password
     );
-
 }
 
 

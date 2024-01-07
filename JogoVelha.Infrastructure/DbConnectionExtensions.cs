@@ -1,3 +1,5 @@
+using JogoVelha.Infrastructure.Repositories;
+using JogoVelha.Infrastructure.Repositories.Implementation;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +12,12 @@ public static class DbConnectionExtensions
     {
         var connection = new SqliteConnection(configuration.GetConnectionString("SqliteConnection"));
         EvolveConfiguration.Configure(connection);
+        return services;
+    }
+
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }
 }

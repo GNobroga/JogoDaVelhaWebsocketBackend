@@ -37,6 +37,7 @@ builder.Services.AddDbContext<SqliteDbContext>(options =>
 
 builder.Services.AddSqliteConfiguration(builder.Configuration);
 builder.Services.AddServiceLayerServices(builder.Configuration);
+builder.Services.AddRepositories();
 
 var app = builder.Build();
 

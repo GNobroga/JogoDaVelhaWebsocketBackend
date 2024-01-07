@@ -10,10 +10,12 @@ public class UserService(IUserRepository repository, IMapper mapper) : IUserServ
 {
 
     public async Task<UserDTO.UserResponse> Create(UserDTO.UserRequest record)
-    {
+    {   
+        
         await ExistEmailOrUsername(record.Email, record.Username);
         var entity = mapper.Map<User>(record);
         entity.Id = default;
+        entity.Password = BCrypt.Net.BCrypt.HashPassword(entity.Password);
         return mapper.Map<UserDTO.UserResponse>(await repository.CreateAsync(entity));
     }
 
@@ -38,8 +40,13 @@ public class UserService(IUserRepository repository, IMapper mapper) : IUserServ
     {
         var user = await GetUserOrThrowException(id);
         await ExistEmailOrUsername(user, record);
+        var password = user.Password;
         mapper.Map(record, user);
         user.Id = id;
+        if (!BCrypt.Net.BCrypt.Verify(record.Password, password)) 
+        {
+            user.Password = BCrypt.Net.BCrypt.HashPassword(record.Password);
+        }
         await repository.UpdateAsync(user);
         return mapper.Map<UserDTO.UserResponse>(user);
     }
