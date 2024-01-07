@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JogoVelha.Infrastructure.Repositories.Implementation;
 
-public class RepositoryBase<TEntity, TContext>(TContext context) : IRepository<TEntity> where TEntity: EntityBase where TContext: DbContext
+public class RepositoryBase<TEntity, TContext>(TContext context) : IRepository<TEntity> 
+    where TEntity: EntityBase where TContext: DbContext
 {   
     protected TContext _context = context;
 
