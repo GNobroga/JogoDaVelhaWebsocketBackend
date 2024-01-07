@@ -4,13 +4,13 @@ namespace JogoVelha.Infrastructure.Repositories.Base;
 
 public interface IRepository<TEntity> where TEntity: EntityBase
 {
-    List<TEntity> FindAll();
+    Task<List<TEntity>> FindAllAsync();
 
-    TEntity FindById(int id);
+    Task<TEntity> FindByIdAsync(int id);
 
-    TEntity Create(TEntity entity);
+    Task<TEntity> CreateAsync(TEntity entity);
 
-    TEntity Update(TEntity entity);
+    Task<TEntity> UpdateAsync(TEntity entity);
 
-    bool Delete(int id);
+    Task<bool> DeleteAsync(int id);
 }

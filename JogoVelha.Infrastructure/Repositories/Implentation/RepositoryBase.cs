@@ -10,28 +10,34 @@ public class RepositoryBase<TEntity, TContext>(TContext context) : IRepository<T
 
     private DbSet<TEntity> _dataset = context.Set<TEntity>();
 
-    public TEntity Create(TEntity entity)
+    public async Task<TEntity> CreateAsync(TEntity entity)
     {
-        throw new NotImplementedException();
+       await _dataset.AddAsync(entity);
+       await _context.SaveChangesAsync();
+       return entity;
     }
 
-    public bool Delete(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var entity = await _dataset.FindAsync(id);
+        _dataset.Remove(entity!);
+        return await _context.SaveChangesAsync() > 0;
     }
 
-    public List<TEntity> FindAll()
+    public async Task<List<TEntity>> FindAllAsync()
     {
-        throw new NotImplementedException();
+        return await _dataset.AsNoTracking().ToListAsync();
     }
 
-    public TEntity FindById(int id)
+    public async Task<TEntity> FindByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return (await _dataset.FindAsync(id))!;
     }
 
-    public TEntity Update(TEntity entity)
+    public async Task<TEntity> UpdateAsync(TEntity entity)
     {
-        throw new NotImplementedException();
+        _dataset.Update(entity);
+        await _context.SaveChangesAsync();
+        return entity;
     }
 }
