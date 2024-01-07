@@ -11,6 +11,10 @@ public class UserService(IUserRepository repository, IMapper mapper) : IUserServ
 
     public async Task<UserDTO.UserResponse> Create(UserDTO.UserRequest record)
     {   
+        if (record.ConfirmPassword is null)
+        {
+            throw new ArgumentException("É necessário ter a senha de confirmação para se cadastrar.");
+        }
         
         await ExistEmailOrUsername(record.Email, record.Username);
         var entity = mapper.Map<User>(record);
@@ -68,12 +72,12 @@ public class UserService(IUserRepository repository, IMapper mapper) : IUserServ
     private async Task ExistEmailOrUsername(User user, UserDTO.UserRequest dto)
     {
 
-        if (!string.Equals(user.Email, dto.Email, StringComparison.OrdinalIgnoreCase) && await repository.ExistsEmail(dto.Email)) 
+        if (!string.Equals(user.Email, dto.Email, StringComparison.InvariantCultureIgnoreCase) && await repository.ExistsEmail(dto.Email)) 
         {
             throw new ArgumentException($"Email ou username estão em uso.");
         }
 
-        if (!string.Equals(user.Username, dto.Username, StringComparison.OrdinalIgnoreCase) && await repository.ExistsUsername(dto.Username)) 
+        if (!string.Equals(user.Username, dto.Username, StringComparison.InvariantCultureIgnoreCase) && await repository.ExistsUsername(dto.Username)) 
         {
             throw new ArgumentException($"Email ou username estão em uso.");
         }

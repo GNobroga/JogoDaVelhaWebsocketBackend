@@ -1,6 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Net;
-using Microsoft.AspNetCore.Mvc;
 
 namespace JogoVelha.Application.Middlewares;
 
@@ -14,30 +12,22 @@ public class GlobalExceptionHandlerMiddleware : IMiddleware
         }
         catch (ValidationException ex) 
         {
-            
+            Console.WriteLine("AQUII");
         }
         catch (ArgumentException ex) 
         {
-            await HandleOnException(context, "Argument invalid", 400, ex.Message);
+            await HandleExceptionAsync(context, "Argument invalid", 400, ex.Message);
         }
-        catch
+        catch (Exception ex)
         {
-            await HandleOnException(context, "Server error", 500, "A server error occurred.");
+            Console.WriteLine(ex.Message);
+            await HandleExceptionAsync(context, "Server error", 500, "A server error occurred.");
         }
     }
 
-    private async Task HandleOnException(HttpContext context, string title, int status, string detail)
+    private async Task HandleExceptionAsync(HttpContext context, string title, int status, string detail)
     {
         context.Response.StatusCode = status;
-
-         ProblemDetails problemDetails = new() 
-            {
-                Title = title,
-                Type = "error",
-                Status = status,
-                Detail = detail
-            };
-
-        await context.Response.WriteAsJsonAsync(problemDetails);
+        await context.Response.WriteAsJsonAsync(new { title, status, detail });
     }
 }

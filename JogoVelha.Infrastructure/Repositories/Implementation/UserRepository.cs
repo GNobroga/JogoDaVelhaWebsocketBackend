@@ -18,13 +18,13 @@ public class UserRepository(SqliteDbContext context) : RepositoryBase<User, Sqli
     public async Task<User?> FindByEmail(string email)
     {
         return await _context.Users.FirstOrDefaultAsync(
-            user => string.Equals(user.Email, email, StringComparison.OrdinalIgnoreCase));  
+            user =>  EF.Functions.Like(user.Email, email.ToLower()));  
 
     }
 
     public async Task<User?> FindByUsername(string username)
     {
         return await _context.Users.FirstOrDefaultAsync(
-            user => string.Equals(user.Username, username, StringComparison.OrdinalIgnoreCase)); 
+            user => EF.Functions.Like(user.Username, username.ToLower())); 
     }
 }

@@ -6,11 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JogoVelha.Application.Controllers;
 
+[Produces(CONTENT_TYPE)]
 [ApiVersion("1.0")]
 [ApiController]
 [Route("api/[controller]")]
+
 public class UsersController(IUserService service) : ControllerBase
 {   
+    public const string CONTENT_TYPE = "application/json";
+
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<UserDTO.UserResponse>), (int) HttpStatusCode.OK)]
     public async Task<ActionResult<IEnumerable<UserDTO.UserResponse>>> Get()
