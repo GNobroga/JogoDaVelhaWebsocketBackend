@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JogoVelha.Infrastructure;
 
-public class JogoVelhaDbContext(DbContextOptions<JogoVelhaDbContext> options) : DbContext(options)
+public class SqliteDbContext(DbContextOptions<SqliteDbContext> options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
 }
