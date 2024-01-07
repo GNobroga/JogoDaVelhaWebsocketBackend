@@ -14,4 +14,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\JogoVelha.Domain\JogoVelha.Domain.csproj" />
+    <ProjectReference Include="..\JogoVelha.Infrastructure\JogoVelha.Infrastructure.csproj" />
+    <ProjectReference Include="..\JogoVelha.Service\JogoVelha.Service.csproj" />
+  </ItemGroup>
+
 </Project>
