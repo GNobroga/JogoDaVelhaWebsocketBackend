@@ -17,7 +17,7 @@ public class AuthController(IUserService userService, ITokenService tokenService
 
         var user = await userService.FindByEmail(email);
 
-        if (user is null || BCrypt.Net.BCrypt.Verify(password, user.Password))
+        if (user is null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
         {
             throw new ArgumentException("Email ou senha incorretos");
         }
