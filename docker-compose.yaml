@@ -1,0 +1,20 @@
+services:
+
+  db:
+    container_name: db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: api
+      POSTGRES_PASSWORD: api
+    ports:
+      - 5432:5432
+  
+  adminer:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: api@api.com 
+      PGADMIN_DEFAULT_PASSWORD: api 
+    ports:
+      - 15000:80

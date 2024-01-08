@@ -18,9 +18,9 @@ public static class WebApiExtension
     public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAutoMapper(options => options.AddProfile<AutoMapperProfile>());
-        builder.Services.AddSqliteConfiguration(builder.Configuration);
-        builder.Services.AddDbContext<SqliteDbContext>(options =>
-            options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
+        builder.Services.AddPostgresConfiguration(builder.Configuration);
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQLConnection")));
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddServiceLayerServices(builder.Configuration);
         builder.Services.AddRepositories();
