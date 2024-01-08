@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JogoVelha.Application.Controllers;
 
-
+[Authorize]
 [Produces(CONTENT_TYPE)]
 [ApiVersion("1.0")]
 [ApiController]
@@ -16,7 +16,6 @@ public class UsersController(IUserService service) : ControllerBase
 {   
     public const string CONTENT_TYPE = "application/json";
 
-    [Authorize]
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<UserDTO.UserResponse>), (int) HttpStatusCode.OK)]
     public async Task<ActionResult<IEnumerable<UserDTO.UserResponse>>> Get()
@@ -24,7 +23,6 @@ public class UsersController(IUserService service) : ControllerBase
         return Ok(await service.FindAll());
     }
 
-    [Authorize]
     [HttpGet("{id:int}", Name = "GetById")]
     [ProducesResponseType(typeof(UserDTO.UserResponse), (int) HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(UserDTO.UserResponse), (int) HttpStatusCode.OK)]
@@ -33,6 +31,14 @@ public class UsersController(IUserService service) : ControllerBase
         return await service.FindById(id);
     }
 
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(UserDTO.UserResponse), (int) HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(UserDTO.UserResponse), (int) HttpStatusCode.OK)]
+    public async Task<ActionResult<UserDTO.UserResponse>> Put(int id, UserDTO.UserRequest record)
+    {
+        var userResponse = await service.Update(id, record);
+        return userResponse;
+    }
 
     [HttpPost]
     [ProducesResponseType(typeof(UserDTO.UserResponse), (int) HttpStatusCode.BadRequest)]
@@ -43,17 +49,6 @@ public class UsersController(IUserService service) : ControllerBase
         return CreatedAtRoute("GetById", new { Id = record.Id }, userResponse);
     }
 
-    [Authorize]
-    [HttpPut("{id:int}")]
-    [ProducesResponseType(typeof(UserDTO.UserResponse), (int) HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(UserDTO.UserResponse), (int) HttpStatusCode.OK)]
-    public async Task<ActionResult<UserDTO.UserResponse>> Put(int id, UserDTO.UserRequest record)
-    {
-        var userResponse = await service.Update(id, record);
-        return userResponse;
-    }
-
-    [Authorize]
     [HttpDelete("{id:int}")]
     [ProducesResponseType(typeof(UserDTO.UserResponse), (int) HttpStatusCode.OK)]
     public async Task<ActionResult<bool>> Delete(int id)

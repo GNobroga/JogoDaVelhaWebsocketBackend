@@ -34,6 +34,8 @@ public static class WebApiExtension
         builder.Services.AddScoped<GlobalExceptionHandlerMiddleware>();
         builder.Services.AddScoped<IValidator<UserDTO.UserRequest>, UserValidator>();
         builder.Services.AddScoped<IValidator<UserDTO.UserLogin>,  UserLoginValidator>();
+        builder.Services.AddScoped<IValidator<ForgotAccountDTO>,  ForgotAccountValidator>();
+        builder.Services.AddScoped<IValidator<ConfirmEmailDTO>,  ConfirmEmailValidator>();
         builder.Services.AddSignalR();
     }
 
