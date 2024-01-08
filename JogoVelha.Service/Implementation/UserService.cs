@@ -1,12 +1,15 @@
+using System.Runtime.CompilerServices;
+using System.Text.Json;
 using AutoMapper;
 using JogoVelha.Domain.DTOs;
 using JogoVelha.Domain.Entities;
 using JogoVelha.Infrastructure.Repositories;
 using JogoVelha.Service.Interfaces;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace JogoVelha.Service.Implementation;
 
-public class UserService(IUserRepository repository, IMapper mapper) : IUserService
+public class UserService(IUserRepository repository, IMapper mapper, IDistributedCache cache) : IUserService
 {
 
     public async Task<UserDTO.UserResponse> Create(UserDTO.UserRequest record)
@@ -31,13 +34,33 @@ public class UserService(IUserRepository repository, IMapper mapper) : IUserServ
 
     public async Task<IEnumerable<UserDTO.UserResponse>> FindAll()
     {
-        return mapper.Map<List<UserDTO.UserResponse>>(await repository.FindAllAsync());
+        string cacheKey = "users";
+        string? cachedUsersJson = await cache.GetStringAsync(cacheKey);
+
+        if (!string.IsNullOrEmpty(cachedUsersJson)) 
+            return JsonSerializer.Deserialize<List<UserDTO.UserResponse>>(cachedUsersJson)!;
+
+        var users = mapper.Map<List<UserDTO.UserResponse>>(await repository.FindAllAsync());
+
+        await cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(users));
+
+        return users;
     }
 
     public async Task<UserDTO.UserResponse> FindById(int id)
     {
+        string cacheKey = $"user:{id}";
+        string? cachedUserJson = await cache.GetStringAsync(cacheKey);
+
+        if (!string.IsNullOrEmpty(cachedUserJson)) 
+            return JsonSerializer.Deserialize<UserDTO.UserResponse>(cachedUserJson)!;
+
         var user = await GetUserOrThrowException(id);
-        return mapper.Map<UserDTO.UserResponse>(user);
+        var response = mapper.Map<UserDTO.UserResponse>(user);
+
+        await cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(response));
+
+        return response;
     }
 
     public async Task<UserDTO.UserResponse> Update(int id, UserDTO.UserRequest record)

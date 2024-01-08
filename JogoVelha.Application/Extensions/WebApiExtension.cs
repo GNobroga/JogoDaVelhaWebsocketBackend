@@ -18,6 +18,11 @@ public static class WebApiExtension
     public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAutoMapper(options => options.AddProfile<AutoMapperProfile>());
+
+        builder.Services.AddStackExchangeRedisCache(options => {
+            options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
+        });
+
         builder.Services.AddPostgresConfiguration(builder.Configuration);
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQLConnection")));
