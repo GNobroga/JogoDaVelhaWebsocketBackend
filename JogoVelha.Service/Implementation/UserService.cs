@@ -14,11 +14,6 @@ public class UserService(IUserRepository repository, IMapper mapper, IDistribute
 
     public async Task<UserDTO.UserResponse> Create(UserDTO.UserRequest record)
     {   
-        if (record.ConfirmPassword is null)
-        {
-            throw new ArgumentException("É necessário ter a senha de confirmação para se cadastrar.");
-        }
-        
         await ExistEmailOrUsername(record.Email, record.Username);
         var entity = mapper.Map<User>(record);
         entity.Id = default;

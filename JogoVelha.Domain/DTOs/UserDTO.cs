@@ -7,7 +7,7 @@ public sealed class UserDTO
         string Username,
         string Email,
         string Password,
-        string? ConfirmPassword
+        string ConfirmPassword
     );
 
     public record UserResponse(
