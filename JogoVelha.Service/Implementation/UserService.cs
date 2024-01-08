@@ -14,6 +14,8 @@ public class UserService(IUserRepository repository, IMapper mapper, IDistribute
 
     public async Task<UserDTO.UserResponse> Create(UserDTO.UserRequest record)
     {   
+        string cacheKey = "users";
+        await cache.RemoveAsync(cacheKey);
         await ExistEmailOrUsername(record.Email, record.Username);
         var entity = mapper.Map<User>(record);
         entity.Id = default;
@@ -23,8 +25,10 @@ public class UserService(IUserRepository repository, IMapper mapper, IDistribute
 
     public async Task<bool> Delete(int id)
     {
-       await GetUserOrThrowException(id);
-       return await repository.DeleteAsync(id);
+        await GetUserOrThrowException(id);
+        string cacheKey = $"user:{id}";
+        await cache.RemoveAsync(cacheKey);
+        return await repository.DeleteAsync(id);
     }
 
     public async Task<IEnumerable<UserDTO.UserResponse>> FindAll()
@@ -59,7 +63,8 @@ public class UserService(IUserRepository repository, IMapper mapper, IDistribute
     }
 
     public async Task<UserDTO.UserResponse> Update(int id, UserDTO.UserRequest record)
-    {
+    {   
+        string cacheKey = $"user:{id}";
         var user = await GetUserOrThrowException(id);
         await ExistEmailOrUsername(user, record);
         var password = user.Password;
@@ -70,6 +75,7 @@ public class UserService(IUserRepository repository, IMapper mapper, IDistribute
             user.Password = BCrypt.Net.BCrypt.HashPassword(record.Password);
         }
         await repository.UpdateAsync(user);
+        await cache.RemoveAsync(cacheKey);
         return mapper.Map<UserDTO.UserResponse>(user);
     }
 

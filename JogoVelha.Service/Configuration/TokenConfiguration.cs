@@ -6,4 +6,5 @@ public class TokenConfiguration
 
     public string Secret { get; set; } = null!;
 
+    public int Duration { get; set; } = 10;
 }

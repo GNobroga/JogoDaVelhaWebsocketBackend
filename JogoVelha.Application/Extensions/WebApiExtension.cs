@@ -45,7 +45,6 @@ public static class WebApiExtension
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
                 ValidateAudience = false,
-                ValidateLifetime = true,
                 ValidIssuer = builder.Configuration["Jwt:Issuer"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
             };
@@ -113,7 +112,7 @@ public static class WebApiExtension
                                 Id = JwtBearerDefaults.AuthenticationScheme
                             }
                         },
-                        [] // Values 
+                        new List<string>() 
                    }
                 }
             );
