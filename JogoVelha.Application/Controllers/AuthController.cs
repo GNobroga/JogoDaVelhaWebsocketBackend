@@ -1,3 +1,4 @@
+using System.Net;
 using JogoVelha.Domain.DTOs;
 using JogoVelha.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ namespace JogoVelha.Application.Controllers;
 public class AuthController(IUserService userService, ITokenService tokenService) : ControllerBase
 {   
     [HttpPost]
+    [ProducesResponseType((int) HttpStatusCode.OK)]
     public async Task<ActionResult> Post(UserDTO.UserLogin login) 
     {
         var (email, password) = login;

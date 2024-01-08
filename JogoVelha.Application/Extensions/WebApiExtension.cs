@@ -78,7 +78,45 @@ public static class WebApiExtension
     {
         builder.Services.AddSwaggerGen(options => 
         {
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "JogoVelha.API", Version = "v1" });
+            options.SwaggerDoc("v1", new OpenApiInfo {
+                Title = "Jogo da Velha API",
+                Version = "v1",
+                Description = "API para cadastrar e servir como conector de websockets",
+                Contact = new OpenApiContact 
+                {
+                    Name = "Gabriel Cardoso",
+                    Url = new Uri("https://github.com/GNobroga/JogoDaVelhaWebsocketBackend")
+                }
+            });
+
+            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, 
+                new OpenApiSecurityScheme 
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "'Bearer' [token]"
+                }
+            );
+
+            options.AddSecurityRequirement(
+                new OpenApiSecurityRequirement
+                {
+                   {
+                        new OpenApiSecurityScheme 
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = JwtBearerDefaults.AuthenticationScheme
+                            }
+                        },
+                        [] // Values 
+                   }
+                }
+            );
         });
     }
 

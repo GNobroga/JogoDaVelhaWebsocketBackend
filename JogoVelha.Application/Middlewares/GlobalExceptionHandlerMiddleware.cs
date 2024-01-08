@@ -10,22 +10,17 @@ public class GlobalExceptionHandlerMiddleware : IMiddleware
         {
             await next(context);
         }
-        catch (ValidationException ex) 
-        {
-            Console.WriteLine("AQUII");
-        }
         catch (ArgumentException ex) 
         {
             await HandleExceptionAsync(context, "Argument invalid", 400, ex.Message);
         }
-        catch (Exception ex)
+        catch 
         {
-            Console.WriteLine(ex.Message);
             await HandleExceptionAsync(context, "Server error", 500, "A server error occurred.");
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, string title, int status, string detail)
+    private static async Task HandleExceptionAsync(HttpContext context, string title, int status, string detail)
     {
         context.Response.StatusCode = status;
         await context.Response.WriteAsJsonAsync(new { title, status, detail });
