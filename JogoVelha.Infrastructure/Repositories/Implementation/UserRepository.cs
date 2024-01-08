@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JogoVelha.Infrastructure.Repositories.Implementation;
 
-public class UserRepository(SqliteDbContext context) : RepositoryBase<User, SqliteDbContext>(context), IUserRepository
+public class UserRepository(AppDbContext context) : RepositoryBase<User, AppDbContext>(context), IUserRepository
 {
     public async Task<bool> ExistsEmail(string email)
     {

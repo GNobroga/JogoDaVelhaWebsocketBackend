@@ -10,6 +10,7 @@ public struct EvolveConfiguration
     {
         try 
         {
+  
             var evolve = new Evolve(connection) 
             {
                 Locations = [Path.Combine("..", "JogoVelha.Infrastructure", "Database", "Migrations")],
@@ -18,9 +19,10 @@ public struct EvolveConfiguration
 
             evolve.Migrate();
         }
-        catch 
+        catch (Exception ex)
         {
-            Console.WriteLine("Database migration failed");
+            Console.WriteLine(ex.Message);
+            throw;
         }
     }
 }
