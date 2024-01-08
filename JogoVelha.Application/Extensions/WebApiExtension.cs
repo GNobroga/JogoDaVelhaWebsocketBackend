@@ -33,6 +33,7 @@ public static class WebApiExtension
         builder.Services.AddRepositories();
         builder.Services.AddScoped<GlobalExceptionHandlerMiddleware>();
         builder.Services.AddScoped<IValidator<UserDTO.UserRequest>, UserValidator>();
+        builder.Services.AddScoped<IValidator<UserDTO.UserLogin>,  UserLoginValidator>();
         builder.Services.AddSignalR();
     }
 
@@ -53,13 +54,8 @@ public static class WebApiExtension
 
     public static void ConfigureApiVersioning(this WebApplicationBuilder builder)
     {
-
         TokenConfiguration tokenConfiguration = new();
-
         builder.Configuration.GetSection("Jwt").Bind(tokenConfiguration);
-
-        builder.Services.AddSingleton(tokenConfiguration);
-
         builder.Services.AddSingleton(tokenConfiguration);
         var apiVersioningBuilder = builder.Services.AddApiVersioning(options => {
             options.AssumeDefaultVersionWhenUnspecified = true;

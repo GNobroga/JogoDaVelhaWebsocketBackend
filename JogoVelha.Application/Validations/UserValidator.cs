@@ -24,7 +24,6 @@ public class UserValidator : AbstractValidator<UserDTO.UserRequest>
 
         RuleFor(u => u.ConfirmPassword)
             .Equal(u => u.Password).WithMessage("A confirm password deve ser igual a password");
-    
 
     }
 }   

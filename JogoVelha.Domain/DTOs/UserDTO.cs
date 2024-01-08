@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace JogoVelha.Domain.DTOs;
 
 public sealed class UserDTO 
@@ -16,6 +14,11 @@ public sealed class UserDTO
         int Id,
         string Username,
         string Email
+    );
+
+    public record UserLogin(
+        string Email,
+        string Password
     );
 }
 

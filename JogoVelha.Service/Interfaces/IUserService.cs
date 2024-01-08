@@ -1,4 +1,5 @@
 using JogoVelha.Domain.DTOs;
+using JogoVelha.Domain.Entities;
 
 namespace JogoVelha.Service.Interfaces;
 
@@ -12,6 +13,8 @@ public interface IUserService
     Task<UserDTO.UserResponse> Create(UserDTO.UserRequest record);
 
     Task<UserDTO.UserResponse> Update(int id, UserDTO.UserRequest record);
+
+    Task<User?> FindByEmail(string email);
 
     Task<bool> Delete(int id);
 }

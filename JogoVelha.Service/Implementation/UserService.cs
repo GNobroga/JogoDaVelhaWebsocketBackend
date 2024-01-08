@@ -100,4 +100,7 @@ public class UserService(IUserRepository repository, IMapper mapper, IDistribute
             throw new ArgumentException($"Email ou username estão em uso.");
         }
     }
+
+    public async Task<User?> FindByEmail(string email) => await repository.FindByEmail(email);
+    
 }
