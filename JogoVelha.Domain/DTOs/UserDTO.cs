@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace JogoVelha.Domain.DTOs;
 
 public sealed class UserDTO 
