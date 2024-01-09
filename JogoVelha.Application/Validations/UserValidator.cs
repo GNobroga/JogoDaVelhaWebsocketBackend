@@ -23,7 +23,7 @@ public class UserValidator : AbstractValidator<UserDTO.UserRequest>
             .MaximumLength(200).WithMessage("A password pode ter no máximo 200 caracteres");
 
         RuleFor(u => u.ConfirmPassword)
-            .Equal(u => u.Password).WithMessage("A confirm password deve ser igual a password");
+            .Equal(u => u.Password).WithMessage("A senha de confirmação deve ser igual a password");
 
     }
 }   

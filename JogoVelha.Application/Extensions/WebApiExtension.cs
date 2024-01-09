@@ -10,6 +10,7 @@ using JogoVelha.Infrastructure;
 using JogoVelha.Service;
 using JogoVelha.Service.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -49,6 +50,22 @@ public static class WebApiExtension
                 ValidateAudience = false,
                 ValidIssuer = builder.Configuration["Jwt:Issuer"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
+            };
+        });
+    }
+
+    public static void ConfigureValidationModelHandler(this IMvcBuilder builder)
+    {
+        builder.ConfigureApiBehaviorOptions(options => {
+            options.InvalidModelStateResponseFactory = context => {
+
+            var errors = context.ModelState.Values.SelectMany(v => v.Errors).Select(v => v.ErrorMessage);
+
+            return new BadRequestObjectResult(new {
+                Title = "Error",
+                Status = 400,
+                Details = errors
+            });  
             };
         });
     }
@@ -131,5 +148,7 @@ public static class WebApiExtension
        app.UseCors(cors => cors.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
     }
 
+
+    
 
 }

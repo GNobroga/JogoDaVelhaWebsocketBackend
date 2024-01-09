@@ -12,17 +12,17 @@ public class GlobalExceptionHandlerMiddleware : IMiddleware
         }
         catch (ArgumentException ex) 
         {
-            await HandleExceptionAsync(context, "Argument invalid", 400, ex.Message);
+            await HandleExceptionAsync(context, "Argument invalid", 400, [ex.Message]);
         }
         catch 
         {
-            await HandleExceptionAsync(context, "Server error", 500, "A server error occurred.");
+            await HandleExceptionAsync(context, "Server error", 500, ["A server error occurred."]);
         }
     }
 
-    private static async Task HandleExceptionAsync(HttpContext context, string title, int status, string detail)
+    private static async Task HandleExceptionAsync(HttpContext context, string title, int status, string[] details)
     {
         context.Response.StatusCode = status;
-        await context.Response.WriteAsJsonAsync(new { title, status, detail });
+        await context.Response.WriteAsJsonAsync(new { title, status, details });
     }
 }

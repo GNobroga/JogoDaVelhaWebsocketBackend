@@ -1,9 +1,11 @@
 using JogoVelha.Application.Extensions;
 using JogoVelha.Application.Hubs;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .ConfigureValidationModelHandler();
 
 builder.Services.AddEndpointsApiExplorer();
 
