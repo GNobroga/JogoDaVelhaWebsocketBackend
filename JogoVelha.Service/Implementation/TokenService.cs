@@ -16,7 +16,8 @@ public class TokenService(TokenConfiguration configuration) : ITokenService
         var signingCrendetials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
         List<Claim> claims = [
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email)
+            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+            new Claim("username", user.Username)
         ];
 
         var token = new JwtSecurityToken(

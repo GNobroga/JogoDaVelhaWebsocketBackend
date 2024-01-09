@@ -33,5 +33,4 @@ public class AccountController(IUserService userService, IAccountService account
         var confirmed = (await userService.FindByEmail(dto.Email)) is not null;
         return Ok(new { confirmed });
     }
-
 }

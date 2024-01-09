@@ -43,13 +43,23 @@ public static class WebApiExtension
     public static void ConfigureAuthentication(this WebApplicationBuilder builder)
     {
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(opt => {
-            opt.TokenValidationParameters = new() {
+        .AddJwtBearer(options => {
+            options.TokenValidationParameters = new() {
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
                 ValidateAudience = false,
                 ValidIssuer = builder.Configuration["Jwt:Issuer"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
+            };
+
+            options.Events = new()
+            {
+                OnMessageReceived = context => 
+                {
+                    var accessToken = context.Request.Query["access_token"];
+                    context.Token = accessToken;
+                    return Task.CompletedTask;
+                }
             };
         });
     }

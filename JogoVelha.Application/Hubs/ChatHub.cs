@@ -1,8 +1,10 @@
 using System.Collections.Concurrent;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace JogoVelha.Application.Hubs;
 
+[Authorize]
 public sealed class ChatHub : Hub
 {
     private class Action 
@@ -12,13 +14,15 @@ public sealed class ChatHub : Hub
         public const string USER_JOINED = "userJoined";
     }
 
-    readonly ConcurrentDictionary<string, string> _users = new();
     
-    public async Task Connect(string username) {
-        if (_users.ContainsKey(username))
-            return;
-        _users[username] = Context.ConnectionId;
-        await Clients.All.SendAsync(Action.SEND_MESSAGE, $"O usuário {username} foi conectado.");
+    public async Task Connect(string username) 
+    {
+        await Clients.AllExcept(Context.ConnectionId).SendAsync(Action.SEND_MESSAGE, $"{username} foi conectado ao Chat.");
+    }
+
+    public async Task SendMessage(string from, string message) 
+    {
+        await Clients.All.SendAsync(Action.SEND_MESSAGE, from, message);
     }
 
 }

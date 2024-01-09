@@ -1,6 +1,7 @@
 using System.Net;
 using JogoVelha.Domain.DTOs;
 using JogoVelha.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JogoVelha.Application.Controllers;
