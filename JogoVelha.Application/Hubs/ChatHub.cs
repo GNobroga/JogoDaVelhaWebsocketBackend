@@ -14,12 +14,6 @@ public sealed class ChatHub : Hub
         public const string USER_JOINED = "userJoined";
     }
 
-    
-    public async Task Connect(string username) 
-    {
-        await Clients.AllExcept(Context.ConnectionId).SendAsync(Action.SEND_MESSAGE, $"{username} foi conectado ao Chat.");
-    }
-
     public async Task SendMessage(string from, string message) 
     {
         await Clients.All.SendAsync(Action.SEND_MESSAGE, from, message);
