@@ -11,7 +11,11 @@ public class GamingTable
 
     private readonly string[,] _table = new string[3, 3];
 
+    public string[] ArrayTable => [.._table];
+
     private string _currentTurnValue = null!;
+
+    public string CurrentTurnValue => _currentTurnValue;
 
     public bool HasWinner { get; set; } = false;
 
@@ -34,16 +38,15 @@ public class GamingTable
         _currentTurnValue = RandomPlayerTurn();
     }
 
-    public static string RandomPlayerTurn()
-    {
-        return Random.Shared.Next(2) % 2 == 0 ? "O" : "X";
-    }
+    public static string RandomPlayerTurn() => Random.Shared.Next(2) % 2 == 0 ? "O" : "X";
+    
+    public void ChangePlayerTurn() => _currentTurnValue = _currentTurnValue == "O" ? "X" : "O";
+    
+    public bool IsMarked(int row, int col) => _table[row, col] is not null;
 
-    public void Mark(int col, int line, string value)
-    {
-        _table[col, line] = value;
-    }
-
+    public void SetValue(int row, int col, string value) => _table[row, col] = value;
+    
+    
     public bool FindWinnerInTable(string value)
     {
         return HasColumnsMarked(_table, value) || 
@@ -113,7 +116,6 @@ public class GamingTable
                 count++;
             }
         }
-
 
         return count >= 3;
     }
