@@ -1,7 +1,6 @@
 using JogoVelha.Application.Extensions;
 using JogoVelha.Application.Hubs;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
@@ -26,7 +25,9 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseHttpsRedirection();
 app.MapHub<ChatHub>("/hub/chat");
+app.MapHub<GameHub>("/hub/game");
 app.ConfigureMiddlewares();
 app.ConfigureCors();
 

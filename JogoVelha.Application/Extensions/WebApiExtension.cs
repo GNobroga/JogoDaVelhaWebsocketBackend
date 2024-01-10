@@ -17,12 +17,13 @@ using Microsoft.OpenApi.Models;
 
 namespace JogoVelha.Application.Extensions;
 
-public static class WebApiExtension 
+public static class WebApiExtension
 {
     public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAutoMapper(options => options.AddProfile<AutoMapperProfile>());
-        builder.Services.AddStackExchangeRedisCache(options => {
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
             options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
         });
 
@@ -34,17 +35,19 @@ public static class WebApiExtension
         builder.Services.AddRepositories();
         builder.Services.AddScoped<GlobalExceptionHandlerMiddleware>();
         builder.Services.AddScoped<IValidator<UserDTO.UserRequest>, UserValidator>();
-        builder.Services.AddScoped<IValidator<UserDTO.UserLogin>,  UserLoginValidator>();
-        builder.Services.AddScoped<IValidator<ForgotAccountDTO>,  ForgotAccountValidator>();
-        builder.Services.AddScoped<IValidator<ConfirmEmailDTO>,  ConfirmEmailValidator>();
+        builder.Services.AddScoped<IValidator<UserDTO.UserLogin>, UserLoginValidator>();
+        builder.Services.AddScoped<IValidator<ForgotAccountDTO>, ForgotAccountValidator>();
+        builder.Services.AddScoped<IValidator<ConfirmEmailDTO>, ConfirmEmailValidator>();
         builder.Services.AddSignalR();
     }
 
     public static void ConfigureAuthentication(this WebApplicationBuilder builder)
     {
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options => {
-            options.TokenValidationParameters = new() {
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new()
+            {
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
                 ValidateAudience = false,
@@ -54,7 +57,7 @@ public static class WebApiExtension
 
             options.Events = new()
             {
-                OnMessageReceived = context => 
+                OnMessageReceived = context =>
                 {
                     var accessToken = context.Request.Query["access_token"];
                     context.Token = accessToken;
@@ -66,16 +69,19 @@ public static class WebApiExtension
 
     public static void ConfigureValidationModelHandler(this IMvcBuilder builder)
     {
-        builder.ConfigureApiBehaviorOptions(options => {
-            options.InvalidModelStateResponseFactory = context => {
+        builder.ConfigureApiBehaviorOptions(options =>
+        {
+            options.InvalidModelStateResponseFactory = context =>
+            {
 
-            var errors = context.ModelState.Values.SelectMany(v => v.Errors).Select(v => v.ErrorMessage);
+                var errors = context.ModelState.Values.SelectMany(v => v.Errors).Select(v => v.ErrorMessage);
 
-            return new BadRequestObjectResult(new {
-                Title = "Error",
-                Status = 400,
-                Details = errors
-            });  
+                return new BadRequestObjectResult(new
+                {
+                    Title = "Error",
+                    Status = 400,
+                    Details = errors
+                });
             };
         });
     }
@@ -85,18 +91,20 @@ public static class WebApiExtension
         TokenConfiguration tokenConfiguration = new();
         builder.Configuration.GetSection("Jwt").Bind(tokenConfiguration);
         builder.Services.AddSingleton(tokenConfiguration);
-        var apiVersioningBuilder = builder.Services.AddApiVersioning(options => {
+        var apiVersioningBuilder = builder.Services.AddApiVersioning(options =>
+        {
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.DefaultApiVersion = new ApiVersion(1, 0);
             options.ReportApiVersions = true;
             options.ApiVersionReader = ApiVersionReader.Combine(
-                new QueryStringApiVersionReader("api-version"), 
+                new QueryStringApiVersionReader("api-version"),
                 new HeaderApiVersionReader("X-Version"),
                 new MediaTypeApiVersionReader("ver")
             );
         });
 
-        apiVersioningBuilder.AddApiExplorer(options => {
+        apiVersioningBuilder.AddApiExplorer(options =>
+        {
             options.GroupNameFormat = "'v'VVV";
             options.SubstituteApiVersionInUrl = true;
         });
@@ -104,21 +112,22 @@ public static class WebApiExtension
 
     public static void ConfigureSwagger(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSwaggerGen(options => 
+        builder.Services.AddSwaggerGen(options =>
         {
-            options.SwaggerDoc("v1", new OpenApiInfo {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
                 Title = "Jogo da Velha API",
                 Version = "v1",
                 Description = "API para cadastrar e servir como conector de websockets",
-                Contact = new OpenApiContact 
+                Contact = new OpenApiContact
                 {
                     Name = "Gabriel Cardoso",
                     Url = new Uri("https://github.com/GNobroga/JogoDaVelhaWebsocketBackend")
                 }
             });
 
-            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, 
-                new OpenApiSecurityScheme 
+            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme,
+                new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
@@ -133,7 +142,7 @@ public static class WebApiExtension
                 new OpenApiSecurityRequirement
                 {
                    {
-                        new OpenApiSecurityScheme 
+                        new OpenApiSecurityScheme
                         {
                             Reference = new OpenApiReference
                             {
@@ -141,7 +150,7 @@ public static class WebApiExtension
                                 Id = JwtBearerDefaults.AuthenticationScheme
                             }
                         },
-                        new List<string>() 
+                        new List<string>()
                    }
                 }
             );
@@ -150,15 +159,15 @@ public static class WebApiExtension
 
     public static void ConfigureMiddlewares(this WebApplication app)
     {
-       app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+        app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
     }
 
     public static void ConfigureCors(this WebApplication app)
     {
-       app.UseCors(cors => cors.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+        app.UseCors(cors => cors.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
     }
 
 
-    
+
 
 }

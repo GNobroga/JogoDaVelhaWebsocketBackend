@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
@@ -11,7 +10,7 @@ public sealed class ChatHub : Hub
     {
         public const string SEND_MESSAGE = "sendMessage";
         public const string RECEIVE_MESSAGE = "receiveMessage";
-        public const string USER_JOINED = "userJoined";
+        
     }
 
     public async Task SendMessage(string from, string message) 
