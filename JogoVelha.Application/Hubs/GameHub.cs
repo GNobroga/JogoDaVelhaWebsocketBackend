@@ -21,11 +21,7 @@ public class GameHub : Hub
 
         var game = GetGamingTableBySinglePlayerEmail(userId);
 
-        if (ConnectedUsers.ContainsKey(userId))
-        {
-            ConnectedUsers.Add(userId, username);
-        }
-        else 
+        if (!ConnectedUsers.TryAdd(userId, username))
         {
             if (game is null) return;
 
