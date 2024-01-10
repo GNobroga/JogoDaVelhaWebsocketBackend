@@ -21,12 +21,13 @@ public class GameHub : Hub
 
         var game = GetGamingTableBySinglePlayerEmail(userId);
 
-        if (game == null && !ConnectedUsers.ContainsKey(userId))
+        if (ConnectedUsers.ContainsKey(userId))
         {
             ConnectedUsers.Add(userId, username);
         }
         else 
         {
+            if (game is null) return;
 
             await Clients.User(userId).SendAsync("receiveMessage", "RECONNECT", "Voltando para a partida");
             await Task.Delay(DELAY);
