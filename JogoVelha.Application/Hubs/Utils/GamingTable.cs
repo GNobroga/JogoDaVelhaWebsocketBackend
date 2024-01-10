@@ -9,7 +9,12 @@ public class GamingTable
     public string Player1Value = default!;
     public string Player2Value = default!;
 
-    private readonly string[,] _table = new string[3, 3];
+    private readonly string[,] _table = new string[,]
+    {
+        {string.Empty, string.Empty, string.Empty},
+        {string.Empty, string.Empty, string.Empty},
+        {string.Empty, string.Empty, string.Empty}
+    };
 
     public string[] ArrayTable => [.._table];
 
@@ -42,17 +47,18 @@ public class GamingTable
     
     public void ChangePlayerTurn() => _currentTurnValue = _currentTurnValue == "O" ? "X" : "O";
     
-    public bool IsMarked(int row, int col) => _table[row, col] is not null;
+    public bool IsMarked(int row, int col) => _table[row, col] is not {};
 
     public void SetValue(int row, int col, string value) => _table[row, col] = value;
     
     
     public bool FindWinnerInTable(string value)
     {
-        return HasColumnsMarked(_table, value) || 
-            HasRowsMarked(_table, value) || 
-            HasMarkedInDiagonals(_table, value);
+        return HasColumnsMarked(_table, value) || HasRowsMarked(_table, value) || HasMarkedInDiagonals(_table, value);
     }
+
+    public bool IsFullMarked() => ArrayTable.All(v => v != string.Empty);
+    
 
     private static bool HasColumnsMarked(string[,] _table, string value)
     {
@@ -61,7 +67,7 @@ public class GamingTable
             int count = 0;
 
             for (int line = 0; line < _table.GetLength(0); line++)
-            {
+            {   
                 if (_table[line, col].Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
                     count++;
@@ -105,12 +111,14 @@ public class GamingTable
         }
 
         if (count >= 3) return true;
+
         count = 0;
 
         int line = _table.GetLength(0) - 1;
 
         for (int index = 0; index < _table.GetLength(1); index++)
-        {
+        {   
+
             if (_table[index, line--].Equals(value, StringComparison.InvariantCultureIgnoreCase))
             {
                 count++;
