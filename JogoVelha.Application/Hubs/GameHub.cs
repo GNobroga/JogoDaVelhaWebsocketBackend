@@ -148,6 +148,11 @@ public class GameHub : Hub
         
     }
 
+    public Task Disconnect(string email) {
+        ConnectedUsers.Remove(email);
+        return Task.CompletedTask;
+    }
+
     private static GamingTable? GetGamingTableBySinglePlayerEmail(string email)
     {
         return UsersGamingTable.FirstOrDefault(g => g.Player1 == email || g.Player2 == email);
