@@ -13,7 +13,7 @@ public class GameHub : Hub
 
     private static readonly List<GamingTable> UsersGamingTable = [];
 
-    private const int DELAY = 20;
+    private const int DELAY = 35;
 
     public async Task Connect(string username)
     {
